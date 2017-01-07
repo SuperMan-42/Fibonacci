@@ -41,24 +41,6 @@ public class DataServer1 {
 
     public static List<String> getFibonacciData(int num, int page, boolean sort) {
         List<String> returnlist = new ArrayList<>();
-//        if (sort) {
-//            if (num * (page + 1) < total) {
-//                for (int i = num * page; i < num * (page + 1); i++) {
-//                    addReturnData(returnlist, i);
-//                }
-//            } else {
-//                addReturnData(returnlist, total);
-//            }
-//        } else {
-//            if (num * (page + 1) < total) {
-//                for (int i = total - num * page; i > total - num * (page + 1); i--) {
-//                    addReturnData(returnlist, i);
-//                }
-//            } else {
-//                addReturnData(returnlist, 0);
-//            }
-//        }
-
         if (num * (page + 1) < total) {
             for (int i = num * page; i < num * (page + 1); i++) {
                 addReturnData(returnlist, i, sort);
