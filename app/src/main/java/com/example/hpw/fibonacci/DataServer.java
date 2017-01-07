@@ -100,6 +100,9 @@ public class DataServer {
 
     // 递推实现方式
     private static BigInteger fibonacciNormal(int n) {
+        if (n == 0) {
+            return BigInteger.ZERO;
+        }
         if (n <= 2) {
             return BigInteger.ONE;
         }
@@ -118,6 +121,17 @@ public class DataServer {
             return 1;
         } else {
             return fibonacci(n - 1) + fibonacci(n - 2);
+        }
+    }
+
+    public static void main(String[] args) {
+        int i = 0;
+        BigInteger bigInteger = fb(BigInteger.valueOf(i).pow(2).intValue())[0][1];
+//        BigInteger bigInteger = fibonacciNormal(BigInteger.valueOf(i).pow(2).intValue());
+        if (bigInteger.compareTo(temp) > 0) {
+            System.out.println("F(" + i + "^2) -> \n" + decimalFormat.format(bigInteger));
+        } else {
+            System.out.println("F(" + i + "^2) -> \n" + bigInteger.toString());
         }
     }
 }
