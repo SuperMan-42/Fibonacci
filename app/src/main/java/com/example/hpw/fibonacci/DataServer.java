@@ -124,14 +124,15 @@ public class DataServer {
         }
     }
 
-    public static void main(String[] args) {
-        int i = 0;
-        BigInteger bigInteger = fb(BigInteger.valueOf(i).pow(2).intValue())[0][1];
-//        BigInteger bigInteger = fibonacciNormal(BigInteger.valueOf(i).pow(2).intValue());
-        if (bigInteger.compareTo(temp) > 0) {
-            System.out.println("F(" + i + "^2) -> \n" + decimalFormat.format(bigInteger));
-        } else {
-            System.out.println("F(" + i + "^2) -> \n" + bigInteger.toString());
-        }
-    }
+//    //测试
+//    public static void main(String[] args) {
+//        int i = 0;
+//        BigInteger bigInteger = fb(BigInteger.valueOf(i).pow(2).intValue())[0][1];
+////        BigInteger bigInteger = fibonacciNormal(BigInteger.valueOf(i).pow(2).intValue());
+//        if (bigInteger.compareTo(temp) > 0) {
+//            System.out.println("F(" + i + "^2) -> \n" + decimalFormat.format(bigInteger));
+//        } else {
+//            System.out.println("F(" + i + "^2) -> \n" + bigInteger.toString());
+//        }
+//    }
 }
