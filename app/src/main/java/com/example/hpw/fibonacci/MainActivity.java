@@ -16,10 +16,11 @@ import java.util.List;
 public class MainActivity extends CoreBaseActivity<MainPresenter, MainModel> implements MainContract.View {
     CoreRecyclerView coreRecyclerView;
     static Boolean sort = true;
-    static final int num = 10;
+    static final int num = 20;
 
     @Override
     public int getLayoutId() {
+        DataServer1.createFibonacciData();
         return R.layout.activity_main;
     }
 

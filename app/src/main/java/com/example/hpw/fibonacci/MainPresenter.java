@@ -6,7 +6,7 @@ package com.example.hpw.fibonacci;
 public class MainPresenter extends MainContract.Presenter {
     @Override
     public void onStart() {
-        getData(10, 0, true);
+        getData(MainActivity.num, 0, true);
     }
 
     @Override
