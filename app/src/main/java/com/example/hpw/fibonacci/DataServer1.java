@@ -9,6 +9,9 @@ import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by hpw on 17-1-7.
@@ -20,29 +23,44 @@ public class DataServer1 {
     private static final BigInteger temp = BigInteger.TEN.pow(10);
     private static final DecimalFormat decimalFormat = new DecimalFormat("0.0000000000E00");
     private static final int total = 451;
+    private static final int MAX = 10;
     private static final BigInteger[][] UNIT = {{bigInteger1, bigInteger1}, {bigInteger1, bigInteger0}};
     private static final BigInteger[][] ZERO = {{bigInteger0, bigInteger0}, {bigInteger0, bigInteger0}};
     private static SparseArray sparseArray = new SparseArray();
-    private static ACache aCache;
+    private static volatile ACache aCache;
 
     public static void createFibonacciData(Context context) {
         aCache = ACache.get(context);
-        new Thread() {
-            @Override
-            public void run() {
-                for (int i = 0; i <= total; i++) {
-                    addData(i);
+        try {
+            fixedThreadPool(MAX);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //线程池
+    private static void fixedThreadPool(int size) throws InterruptedException, ExecutionException {
+        ExecutorService service = Executors.newFixedThreadPool(size);
+        for (int i = 0; i < total; i++) {
+            int index = i;
+            service.execute(new Runnable() {
+                @Override
+                public void run() {
+                    addData(index);
                 }
-            }
-        }.start();
-//        new Thread() {
-//            @Override
-//            public void run() {
-//                for (int i = total; i >= 0; i--) {
-//                    addData(i);
-//                }
-//            }
-//        }.start();
+            });
+        }
+        for (int i = total - 1; i >= 0; i--) {
+            int index = i;
+            service.execute(new Runnable() {
+                @Override
+                public void run() {
+                    addData(index);
+                }
+            });
+        }
     }
 
     public static List<String> getFibonacciData(int num, int page, boolean sort) {
@@ -85,7 +103,7 @@ public class DataServer1 {
     }
 
     //格式化值(大于10^10)
-    private static String format(int i) {
+    private synchronized static String format(int i) {
         BigInteger bigInteger = fb(BigInteger.valueOf(i).pow(2).intValue())[0][1];
         if (bigInteger.compareTo(temp) > 0) {
             return "F(" + i + "^2) -> " + decimalFormat.format(bigInteger);
