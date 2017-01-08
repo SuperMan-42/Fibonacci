@@ -20,7 +20,7 @@ public class MainActivity extends CoreBaseActivity<MainPresenter, MainModel> imp
 
     @Override
     public int getLayoutId() {
-        DataServer1.createFibonacciData();
+        DataServer1.createFibonacciData(this);
         return R.layout.activity_main;
     }
 

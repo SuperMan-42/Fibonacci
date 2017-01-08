@@ -1,5 +1,10 @@
 package com.example.hpw.fibonacci;
 
+import android.content.Context;
+import android.util.SparseArray;
+
+import com.hpw.mvpframe.utils.ACache;
+
 import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -17,65 +22,79 @@ public class DataServer1 {
     private static final int total = 451;
     private static final BigInteger[][] UNIT = {{bigInteger1, bigInteger1}, {bigInteger1, bigInteger0}};
     private static final BigInteger[][] ZERO = {{bigInteger0, bigInteger0}, {bigInteger0, bigInteger0}};
-    private static List<String> list = new ArrayList<>();
-    private static List<String> list1 = new ArrayList<>();
+    private static SparseArray sparseArray = new SparseArray();
+    private static ACache aCache;
 
-    public static void createFibonacciData() {
+    public static void createFibonacciData(Context context) {
+        aCache = ACache.get(context);
         new Thread() {
             @Override
             public void run() {
                 for (int i = 0; i <= total; i++) {
-                    addData(list, i);
+                    addData(i);
                 }
             }
         }.start();
-        new Thread() {
-            @Override
-            public void run() {
-                for (int i = total; i >= 0; i--) {
-                    addData(list1, i);
-                }
-            }
-        }.start();
+//        new Thread() {
+//            @Override
+//            public void run() {
+//                for (int i = total; i >= 0; i--) {
+//                    addData(i);
+//                }
+//            }
+//        }.start();
     }
 
     public static List<String> getFibonacciData(int num, int page, boolean sort) {
         List<String> returnlist = new ArrayList<>();
-        if (num * (page + 1) < total) {
-            for (int i = num * page; i < num * (page + 1); i++) {
-                addReturnData(returnlist, i, sort);
-            }
-        } else {
-            addReturnData(returnlist, total, sort);
+        int index = num * page, max;
+        max = num * (page + 1) < total ? num * (page + 1) : total;
+        for (int i = index; i < max; i++) {
+            addReturnData(returnlist, i, sort);
         }
         return returnlist;
     }
 
     private static void addReturnData(List<String> s, int i, boolean sort) {
-        try {
-            if (sort) {
-                s.add(list.get(i));
-            } else {
-                s.add(list1.get(i));
-            }
-        } catch (IndexOutOfBoundsException e) {
-            if (sort) {
-                s.add("F(" + i + "^2) -> \n" + decimalFormat.format(fb(BigInteger.valueOf(i).pow(2).intValue())[0][1]));
-            } else {
-                s.add("F(" + (total - i) + "^2) -> \n" + decimalFormat.format(fb(BigInteger.valueOf(total - i).pow(2).intValue())[0][1]));
-            }
+        String string = null;
+        int position = i;
+        if (!sort) {
+            position = total - 1 - i;
+        }
+        if (sparseArray.get(position) != null) {
+            string = sparseArray.get(position).toString();
+        } else if (aCache.getAsString(String.valueOf(position)) != null) {
+            string = aCache.getAsString(String.valueOf(position));
+            sparseArray.put(position, string);
+        } else {
+            string = format(position);
+            sparseArray.put(position, string);
+            aCache.put(String.valueOf(position), string);
+        }
+        s.add(string);
+    }
+
+    private static void addData(int i) {
+        if (aCache.getAsString(String.valueOf(i)) == null) {
+            String s = format(i);
+            sparseArray.put(i, s);
+            aCache.put(String.valueOf(i), s);
+        } else {
+            sparseArray.put(i, aCache.getAsString(String.valueOf(i)));
         }
     }
 
-    private static void addData(List<String> stringList, int i) {
+    //格式化值(大于10^10)
+    private static String format(int i) {
         BigInteger bigInteger = fb(BigInteger.valueOf(i).pow(2).intValue())[0][1];
         if (bigInteger.compareTo(temp) > 0) {
-            stringList.add("F(" + i + "^2) -> \n" + decimalFormat.format(bigInteger));
+            return "F(" + i + "^2) -> " + decimalFormat.format(bigInteger);
         } else {
-            stringList.add("F(" + i + "^2) -> \n" + bigInteger.toString());
+            return "F(" + i + "^2) -> " + bigInteger.toString();
         }
     }
 
+    //计算斐波那契
     private static BigInteger[][] fb(int n) {
         if (n == 0) {
             return ZERO;
