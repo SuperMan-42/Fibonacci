@@ -22,7 +22,7 @@ public class DataServer {
     private static final BigInteger bigInteger1 = BigInteger.ONE;
     private static final BigInteger temp = BigInteger.TEN.pow(10);
     private static final DecimalFormat decimalFormat = new DecimalFormat("0.0000000000E00");
-    private static final int total = 11;
+    private static final int total = 451;
     private static final int MAX = 10;
     private static final BigInteger[][] UNIT = {{bigInteger1, bigInteger1}, {bigInteger1, bigInteger0}};
     private static final BigInteger[][] ZERO = {{bigInteger0, bigInteger0}, {bigInteger0, bigInteger0}};
