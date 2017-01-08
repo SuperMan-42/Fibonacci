@@ -17,12 +17,12 @@ import java.util.concurrent.Executors;
  * Created by hpw on 17-1-7.
  */
 
-public class DataServer1 {
+public class DataServer {
     private static final BigInteger bigInteger0 = BigInteger.ZERO;
     private static final BigInteger bigInteger1 = BigInteger.ONE;
     private static final BigInteger temp = BigInteger.TEN.pow(10);
     private static final DecimalFormat decimalFormat = new DecimalFormat("0.0000000000E00");
-    private static final int total = 451;
+    private static final int total = 11;
     private static final int MAX = 10;
     private static final BigInteger[][] UNIT = {{bigInteger1, bigInteger1}, {bigInteger1, bigInteger0}};
     private static final BigInteger[][] ZERO = {{bigInteger0, bigInteger0}, {bigInteger0, bigInteger0}};
@@ -65,8 +65,8 @@ public class DataServer1 {
 
     public static List<String> getFibonacciData(int num, int page, boolean sort) {
         List<String> returnlist = new ArrayList<>();
-        int index = num * page, max;
-        max = num * (page + 1) < total ? num * (page + 1) : total;
+        int index = num * page, max, temp = num * (page + 1);
+        max = temp < total ? temp : total;
         for (int i = index; i < max; i++) {
             addReturnData(returnlist, i, sort);
         }

@@ -13,6 +13,6 @@ public class MainModel implements MainContract.Model {
     @Override
     public Observable<List<String>> getFibonacciData(int num, int page, boolean sort) {
         //让取数据运行在子线程中
-        return Observable.just(DataServer1.getFibonacciData(num, page, sort)).compose(RxUtil.rxSchedulerHelper());
+        return Observable.just(DataServer.getFibonacciData(num, page, sort)).compose(RxUtil.rxSchedulerHelper());
     }
 }
