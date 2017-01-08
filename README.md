@@ -25,6 +25,7 @@ b.2.点击按钮会在"从小达大"和"从大到小"排序之间切换.
 ## 项目
 
 >[完成的Fibonacci列表项目github地址https://github.com/SuperMan42/Fibonacci](https://github.com/SuperMan42/Fibonacci)  
+apk在工程art目录下  
 完成了所有功能,演示视频:在工程art目录下
 
 <iframe height=498 width=510 src="art/演示视频.mp4" frameborder=0 allowfullscreen></iframe>
