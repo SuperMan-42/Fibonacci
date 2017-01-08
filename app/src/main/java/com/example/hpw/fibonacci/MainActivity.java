@@ -35,6 +35,8 @@ public class MainActivity extends CoreBaseActivity<MainPresenter, MainModel> imp
         coreRecyclerView = (CoreRecyclerView) findViewById(R.id.recyclerview);
         findViewById(R.id.text).setOnClickListener(view -> {
             sort = sort == true ? false : true;
+            if (!sort)
+                showToast("逆序...");
             coreRecyclerView.getAdapter().getData().clear();
             coreRecyclerView.setPage(0);
             coreRecyclerView.getAdapter().openLoadMore(num);

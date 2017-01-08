@@ -23,7 +23,6 @@ public class DataServer {
     private static final BigInteger temp = BigInteger.TEN.pow(10);
     private static final DecimalFormat decimalFormat = new DecimalFormat("0.0000000000E00");
     private static final int total = 451;
-    private static final int MAX = 10;
     private static final BigInteger[][] UNIT = {{bigInteger1, bigInteger1}, {bigInteger1, bigInteger0}};
     private static final BigInteger[][] ZERO = {{bigInteger0, bigInteger0}, {bigInteger0, bigInteger0}};
     private static SparseArray sparseArray = new SparseArray();
@@ -32,7 +31,7 @@ public class DataServer {
     public static void createFibonacciData(Context context) {
         aCache = ACache.get(context);
         try {
-            fixedThreadPool(MAX);
+            threadPool();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -41,24 +40,22 @@ public class DataServer {
     }
 
     //线程池
-    private static void fixedThreadPool(int size) throws InterruptedException, ExecutionException {
-        ExecutorService service = Executors.newFixedThreadPool(size);
-        for (int i = 0; i < total; i++) {
+    private static void threadPool() throws InterruptedException, ExecutionException {
+        ExecutorService service = Executors.newCachedThreadPool();
+        for (int i = 0; i < 50; i++) {
             int index = i;
-            service.execute(new Runnable() {
-                @Override
-                public void run() {
-                    addData(index);
-                }
-            });
-        }
-        for (int i = total - 1; i >= 0; i--) {
-            int index = i;
-            service.execute(new Runnable() {
-                @Override
-                public void run() {
-                    addData(index);
-                }
+            service.execute(() -> {
+                addData(index);
+                addData(index + 50);
+                addData(index + 100);
+                addData(index + 150);
+                addData(index + 200);
+                addData(index + 250);
+                addData(index + 300);
+                addData(index + 350);
+                addData(index + 400);
+                if (index < 20)
+                    addData(total - 1 - index);
             });
         }
     }
